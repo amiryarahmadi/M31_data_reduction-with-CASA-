@@ -1,1 +1,1 @@
-Data Reduction \lambda 
+Data Reduction $\lambda$ 
