@@ -1,0 +1,1410 @@
+tar -xzvf 23B-251.sb44612443.eb44755427.60244.98775324074.ms.tgz
+
+
+casa
+
+split(vis='23B-251.sb44612443.eb44755427.60244.98775324074.ms',outputvis='M31_4074_Sband.ms',spw='0~15',datacolumn='data')
+
+split(vis='23B-251.sb44612443.eb44755427.60244.98775324074.ms',outputvis='M31_4074_Cband.ms',spw='16~31',datacolumn='data')
+
+
+#Online flags
+
+flagcmd(vis='M31_4074_Sband.ms', inpmode='table', reason='any', action='plot', plotfile='flaggingreason_vs_time.png')
+
+flagcmd(vis='M31_4074_Sband.ms', inpmode='table', reason='any', action='apply', flagbackup=False)
+#shadow flagging
+
+plotms(vis='M31_4074_Sband.ms', xaxis='time', yaxis='elevation', antenna='', spw='',
+       coloraxis='field', title='Elevation vs. Time', plotfile='Elevation_vs_Time.png')
+
+flagdata(vis='M31_4074_Sband.ms', mode='shadow', tolerance=0.0, flagbackup=False)
+
+#Zero-Amplitude Data
+
+flagdata(vis='M31_4074_Sband.ms', mode='clip', clipzeros=True, flagbackup=False)
+
+
+#Quacking 
+
+
+flagdata(vis='M31_4074_Sband.ms', mode='quack', quackinterval=5.0, quackmode='beg', flagbackup=False)
+
+#Flag backup
+
+flagmanager(vis='M31_4074_Sband.ms',mode='save',versionname='after_online_flag')
+
+#Hanning Smoothing
+
+hanningsmooth(vis='M31_4074_Sband.ms', outputvis='M31_4074_Sband_hanning.ms', datacolumn='data')
+
+#Flaging: 
+flagmanager(vis='M31_4074_Sband_hanning.ms',mode='save',versionname='before_inittial_flag')
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='0',spw='1,2',correlation='RR,LL,RL,LR',datacolumn='data',flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='0',spw='0~15',scan='1',datacolumn='data',flagbackup=True)----> dummy scan
+
+#Flag edge channels for field = 0
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='0',spw='0~15:0~4;59~63',correlation='RR,LL,RL,LR',datacolumn='data',flagbackup=True)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='tfcrop',field='0',spw='0~15',datacolumn='data',flagbackup=True)
+
+plotms(vis='M31_4074_Sband_hanning.ms',field='0',xaxis='freq',yaxis='amp')
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='tfcrop',field='0',spw='3,4,12',datacolumn='data',flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='tfcrop',field='0',spw='4,5',datacolumn='data',flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='tfcrop',field='0',spw='4',datacolumn='data',flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='tfcrop',field='0',spw='4',timecutoff=3.0,freqcutoff=3.0,datacolumn='data',flagbackup=True)
+*******************************************************************************************************************************************************
+#Initial flag of field 1
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='1',spw='1,2',correlation='RR,LL,RL,LR',datacolumn='data',flagbackup=True)
+
+
+#flag edge channels for field = 1
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='1',spw='0~15:0~4;59~63',correlation='RR,LL,RL,LR',datacolumn='data',flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='tfcrop',field='1',spw='0~15',datacolumn='data',flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='tfcrop',field='1',spw='3',datacolumn='data',flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='tfcrop',scan='72',spw='3',datacolumn='data',flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='tfcrop',scan='72',spw='3',timecutoff=3.0,freqcutoff=3.0,datacolumn='data',flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='72',spw='3:56',antenna='ea02&ea11',correlation='LL',datacolumn='data',flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='72',spw='3:55~59',antenna='',correlation='RR,LL',datacolumn='data',flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='72',spw='3:55~59',antenna='',correlation='RL,LR',datacolumn='data',flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='tfcrop',field='1',spw='4,12',datacolumn='data',flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='tfcrop',field='1',spw='12',datacolumn='data',flagbackup=True)
+
+****************************************************************************************************************************************************
+
+#FLAG FOR FIELD =8
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='1,2',correlation='RR,LL,RL,LR',datacolumn='data',flagbackup=True)
+
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='0~15:0~4;59~63',correlation='RR,LL,RL,LR',datacolumn='data',flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='tfcrop',field='8',scan='',spw='0~15',timecutoff=3.0,freqcutoff=3.0,datacolumn='data',flagbackup=True)
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+#initial calibration: 
+
+gencal(vis='M31_4074_Sband_hanning.ms',caltable='M31_4074_Sband_hanning.antpos',caltype='antpos')
+
+#Initial Phase Calibration 
+
+gaincal(vis='M31_4074_Sband_hanning.ms',caltable='M31_4074_Sband_hanning_intitial_phase.initPh',field='0,1,8',refant='ea04',
+spw='0~15:21~43',gaintype='G',calmode='p',solint='30s',minsnr=5,gaintable=['M31_4074_Sband_hanning.antpos'])
+
+plotms(vis='M31_4074_Sband_hanning_intitial_phase.initPh',xaxis='time',yaxis='phase',coloraxis='corr',iteraxis='antenna',plotrange=[-1,-1,-180,180])
+
+gaincal(vis='M31_4074_Sband_hanning.ms', caltable='M31_4074_Sband_hanning.initPh', 
+        field='0', refant='ea04', spw='0~15:21~43', calmode='p', solint='30s', 
+        minsnr=5, gaintable=['M31_4074_Sband_hanning.antpos'])
+
+
+
+plotms(vis='M31_4074_Sband_hanning.initPh',xaxis='time',yaxis='phase',coloraxis='corr',field='0',iteraxis='antenna',plotrange=[-1,-1,-180,180])
+
+
+#Delay Calibration
+
+gaincal(vis='M31_4074_Sband_hanning.ms',caltable='M31_4074_Sband_hanning.K0', 
+        field='0',refant='ea04',spw='0~15:21~43',gaintype='K',solint='30s',
+combine='scan',minsnr=5,gaintable=['M31_4074_Sband_hanning.antpos','M31_4074_Sband_hanning.initPh'])
+
+plotms(vis='M31_4074_Sband_hanning.K0',xaxis='antenna1',yaxis='delay',coloraxis='baseline')
+
+#BandPass Calibration
+
+bandpass(vis='M31_4074_Sband_hanning.ms',caltable='M31_4074_Sband_hanning.B0',
+         field='0',spw='',refant='ea04',combine='scan', 
+         solint='30s',bandtype='B',
+         gaintable=['M31_4074_Sband_hanning.antpos',
+                    'M31_4074_Sband_hanning.initPh',
+                    'M31_4074_Sband_hanning.K0'])
+
+plotms(vis='M31_4074_Sband_hanning.B0',field='0', 
+        xaxis='chan',yaxis='amp',coloraxis='corr',
+        iteraxis='antenna',gridrows=2,gridcols=2)
+
+plotms(vis='M31_4074_Sband_hanning.B0',field='0', 
+        xaxis='chan',yaxis='phase',coloraxis='corr',plotrange=[-1,-1,-180,180],
+        iteraxis='antenna',gridrows=2,gridcols=2)
+
+gaincal(vis='M31_4074_Sband_hanning.ms',caltable='M31_4074_Sband_hanning.G1',
+        field='0',spw='0~15:21~43',
+        solint='30s',refant='ea04',gaintype='G',calmode='ap',solnorm=False,
+        gaintable=['M31_4074_Sband_hanning.antpos',
+                    'M31_4074_Sband_hanning.initPh',
+                   'M31_4074_Sband_hanning.K0',
+                   'M31_4074_Sband_hanning.B0'],
+        interp=['linear','linear','linear','nearest'])
+
+
+gaincal(vis='M31_4074_Sband_hanning.ms',caltable='M31_4074_Sband_hanning.G1',
+        field='1',spw='0~15:21~43',
+        solint='30s',refant='ea04',gaintype='G',calmode='ap',solnorm=False,
+        gaintable=['M31_4074_Sband_hanning.antpos',
+                    'M31_4074_Sband_hanning.initPh',
+                   'M31_4074_Sband_hanning.K0',
+                   'M31_4074_Sband_hanning.B0'],append=True)
+
+
+applycal(vis='M31_4074_Sband_hanning.ms',
+         field='0,1,8',
+         gaintable=['M31_4074_Sband_hanning.antpos',
+                     'M31_4074_Sband_hanning.G1' ,
+                    'M31_4074_Sband_hanning.initPh',
+                    'M31_4074_Sband_hanning.K0',
+                    'M31_4074_Sband_hanning.B0'],
+         gainfield=['','','','',''], 
+         interp=['linear','linear','linear','linear','nearest'],
+         calwt=False)
+
+
+plotms(vis='M31_4074_Sband_hanning.ms',field='0',correlation='RR,LL',
+       antenna='',avgtime='',xaxis='channel',yaxis='amp',
+       ydatacolumn='corrected',coloraxis='corr',
+       plotfile='plotms_M31-fld0-corrected-amp.png')
+
+
+
+
+********************************************************************************************************
+
+
+plotms(vis='M31_4074_Sband_hanning.ms', field='0',spw='' , antenna='', xaxis='freq', yaxis='amp',
+       ydatacolumn='corrected', coloraxis='corr')
+
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',mode='summary',spw='0~15',field='0',scan='',name='before')
+
+
+ flagmanager(vis='M31_4074_Sband_hanning.ms',mode='save',versionname='after_initial_calibration')
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='0~15', datacolumn='corrected', 
+         freqdevscale=5.0, timedevscale=5.0, action='apply', display='', flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend', field = '0',spw='0~15', extendpols=True,  
+         action='apply', display='', flagbackup=False)
+
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='0~15', growtime=90.0, growfreq=90.0, 
+         action='apply', display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='0', datacolumn='corrected', 
+         freqdevscale=4.5, timedevscale=4.5, action='apply', display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='0', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',antenna='ea15&ea16',spw='0:7',
+correlation='RR',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='3', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='3', datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='0', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='0', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='0', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='0', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply',correlation='RR,LL', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='0', growtime=80.0, growfreq=80.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='3', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply',correlation='RR,LL', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='3', growtime=80.0, growfreq=80.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='3', datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='3', growtime=70.0, growfreq=70.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='4', datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply', display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='4', growtime=70.0, growfreq=70.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='5', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='5', datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply',correlation='RR,LL',display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='5', growtime=70.0, growfreq=70.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='5', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply',correlation='RR,LL',display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='5', growtime=70.0, growfreq=70.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='6', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='6', growtime=80.0, growfreq=80.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='7', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='7', growtime=80.0, growfreq=80.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='9', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='9', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='12', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='12', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='13', datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='13', growtime=70.0, growfreq=70.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='14', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='14', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='15', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='15', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='3', datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply',correlation='RR,LL', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='3', growtime=70.0, growfreq=70.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='3', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply',correlation='RR,LL', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='3', growtime=70.0, growfreq=70.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='3', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply',correlation='RR,LL', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='3', growtime=70.0, growfreq=70.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='3', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply',correlation='RL,LR', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='4', datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply',correlation='RR,LL', display='', flagbackup=False)  
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='4', growtime=70.0, growfreq=70.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='4', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply',correlation='RR,LL', display='', flagbackup=False)  
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='4', growtime=70.0, growfreq=70.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='tfcrop',field='0',spw='4',correlation='RR,LL',datacolumn='corrected',flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='4', growtime=70.0, growfreq=70.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='tfcrop',field='0',spw='5',correlation='RR,LL',datacolumn='corrected',flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='5', growtime=70.0, growfreq=70.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='tfcrop',field='0',spw='5',correlation='RL,LR',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='5', growtime=70.0, growfreq=70.0, 
+         action='apply', display='',correlation='RL,LR', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='5', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply',correlation='RR,LL', display='', flagbackup=False) 
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='5', growtime=80.0, growfreq=80.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)  
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='5', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply',correlation='RL,LR', display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='5', growtime=80.0, growfreq=80.0, 
+         action='apply', display='',correlation='RL,LR', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:31',antenna='ea10&ea19',
+correlation='RR',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:31',antenna='ea02&ea10',
+correlation='RR,LL',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:30',antenna='ea21&ea27',
+correlation='LL',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:30',antenna='ea03&ea12;ea10&ea12',
+correlation='RR',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='5', datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply',correlation='RR,LL', display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:29',antenna='ea10&ea12;ea18&ea19',
+correlation='RR',datacolumn='corrected',flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='5', growtime=70.0, growfreq=70.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)      
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',mode='tfcrop',field='0',spw='5',correlation='RR,LL',datacolumn='corrected',flagbackup=False)   
+
+  
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:28',antenna='ea16&ea23;ea10&ea27',
+correlation='LL',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:28',antenna='ea22&ea25;ea10&ea27',
+correlation='RR',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:27',antenna='ea16&ea23',
+correlation='LL',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:27',antenna='ea12&ea14;ea15&ea27',
+correlation='RR',datacolumn='corrected',flagbackup=False)   
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:26',antenna='ea03&ea08;ea10&ea18;ea17&ea21',
+correlation='LL',datacolumn='corrected',flagbackup=False)    
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:26',antenna='ea17&ea21',
+correlation='LL',datacolumn='corrected',flagbackup=False)  
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:24',antenna='ea12&ea15;ea17&ea21',
+correlation='LL',datacolumn='corrected',flagbackup=False)     
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:24',antenna='ea23&ea25;ea17&ea27',
+correlation='RR',datacolumn='corrected',flagbackup=False)      
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:23',antenna='ea02&ea18;ea16&ea21',
+correlation='RR',datacolumn='corrected',flagbackup=False)    
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:23',antenna='ea02&ea18',
+correlation='LL',datacolumn='corrected',flagbackup=False) 
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:56',antenna='ea02&ea15;ea17&ea22',
+correlation='LL',datacolumn='corrected',flagbackup=False)        
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:56',antenna='ea16&ea27;ea03&ea19',
+correlation='LL',datacolumn='corrected',flagbackup=False)    
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:56',antenna='ea16&ea27;ea03&ea19',
+correlation='RR',datacolumn='corrected',flagbackup=False)                                           
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:21',antenna='ea03&ea22;ea10&ea18',
+correlation='RR',datacolumn='corrected',flagbackup=False)  
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:20',antenna='ea18&ea19',
+correlation='RR',datacolumn='corrected',flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:22',antenna='ea12&ea14;ea02&ea21;ea12&ea15;ea21&ea25;ea14&ea21;ea02&ea27;ea18&ea19',
+correlation='RR',datacolumn='corrected',flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:22',antenna='ea03&ea22;ea02&ea27',
+correlation='LL',datacolumn='corrected',flagbackup=False)  
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:21',antenna='ea02&ea21;ea15&ea18;ea02&ea12;ea17&ea25;ea15&ea18;ea15&ea21;ea18&ea19',
+correlation='LL',datacolumn='corrected',flagbackup=False)    
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:21',antenna='ea02&ea12;ea18&ea19',
+correlation='RR',datacolumn='corrected',flagbackup=False)   
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='5:20',antenna='ea21&ea25;ea03&ea22;ea02&ea12;ea10&ea18',
+correlation='RR',datacolumn='corrected',flagbackup=False)    
+
+                                                                                                          
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='6', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply',correlation='RR,LL', display='', flagbackup=False)       
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='6', growtime=80.0, growfreq=80.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='6:28',antenna='ea18&ea22;ea03&ea14;ea19&ea25;ea16&ea22;ea14&ea27;ea12&ea25;ea21&ea25',
+correlation='LL',datacolumn='corrected',flagbackup=False)   
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='6:28',antenna='ea17&ea21',
+correlation='RR',datacolumn='corrected',flagbackup=False)    
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='6:27',antenna='ea12&ea15;ea02&ea21;ea12&ea17;ea12&ea14',
+correlation='RR',datacolumn='corrected',flagbackup=False)  
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='6:27',antenna='ea12&ea15;ea02&ea21;ea17&ea21;ea12&ea17;ea12&ea18',
+correlation='LL',datacolumn='corrected',flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='6:26',antenna='ea08&ea28;ea19&ea25;ea15&ea22;ea19&ea21;ea03&ea14;ea12&ea25;ea21&ea25',
+correlation='LL',datacolumn='corrected',flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='5',spw='6:26',antenna='ea17&ea19;ea19&ea22;ea19&ea27',
+correlation='RR',datacolumn='corrected',flagbackup=False) 
+
+                                                                                                          
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='7', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply',correlation='RR,LL', display='', flagbackup=False)  
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='7', growtime=70.0, growfreq=70.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='9', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply',correlation='RR,LL', display='', flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='9', growtime=70.0, growfreq=70.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)  
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='4',spw='10:47',antenna='ea16&ea19',
+correlation='LL',datacolumn='corrected',flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='4',spw='10:48',antenna='ea16&ea19',
+correlation='LL',datacolumn='corrected',flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='4',spw='10:49',antenna='ea04&ea19',
+correlation='LL',datacolumn='corrected',flagbackup=False) 
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='11', datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply',correlation='RR,LL', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='11', growtime=70.0, growfreq=70.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False)  
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='12', datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply',correlation='RR,LL', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='12', growtime=70.0, growfreq=70.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False) 
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='13', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply',correlation='RR,LL', display='', flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='13', growtime=70.0, growfreq=70.0, 
+         action='apply', display='',correlation='RR,LL', flagbackup=False) 
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='4', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply',correlation='RR,LL', display='', flagbackup=False)
+
+                                                
+**************************************************************************************************************************************************
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='1', spw='0~15', datacolumn='corrected', 
+         freqdevscale=5.0, timedevscale=5.0, action='apply', display='', flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',field='1', mode='extend', spw='0~15', extendpols=True, action='apply',
+          display='', flagbackup=True)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1',spw='0~15', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)  
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='1', spw='0', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',field='1', mode='extend', spw='0', extendpols=True, action='apply',
+          display='', flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1',spw='0', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='1', spw='3', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply', display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms',field='1', mode='extend', spw='3', extendpols=True, action='apply',
+          display='', flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1',spw='3', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False) 
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='1', spw='3', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply', display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='1', spw='3', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1',spw='3', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False) 
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='1', spw='3', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1',spw='3', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False) 
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='69',spw='3:5',
+antenna='ea10&ea12',correlation='RR',datacolumn='corrected',flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='tfcrop',field='1',spw='3',datacolumn='corrected',flagbackup=False)
+
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1',spw='3', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False) 
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='69',spw='3:6',
+antenna='ea10&ea12',correlation='RR',datacolumn='corrected',flagbackup=False)
+
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='69',spw='3:7',
+antenna='ea10&ea12',correlation='RR',datacolumn='corrected',flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='69',spw='3:7',
+antenna='ea10&ea12',correlation='RR',datacolumn='corrected',flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='69',spw='3:8',
+antenna='ea10&ea12;ea10&ea21',correlation='RR',datacolumn='corrected',flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='69',spw='3:9',
+antenna='ea10&ea12;ea10&ea21',correlation='RR',datacolumn='corrected',flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='69',spw='3:11',
+antenna='ea10&ea12',correlation='RR',datacolumn='corrected',flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='69',spw='3:16~31',
+antenna='ea10&ea12;ea10&ea21',correlation='RR',datacolumn='corrected',flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',scan='69',spw='3:32~63',
+antenna='ea10&ea12;ea10&ea21',correlation='RR',datacolumn='corrected',flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='1', spw='4', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms',field='1', mode='extend', spw='4', extendpols=True, action='apply',
+          display='', flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1',spw='4', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False) 
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='1', spw='5', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms',field='1', mode='extend', spw='5', extendpols=True, action='apply',
+          display='', flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1',spw='5', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False) 
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='1', spw='6', datacolumn='corrected', 
+         freqdevscale=5.0, timedevscale=5.0, action='apply', display='', flagbackup=False)
+
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms',field='1', mode='extend', spw='6', extendpols=True, action='apply',
+          display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1',spw='6', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False) 
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='1', spw='7', datacolumn='corrected', 
+         freqdevscale=5.0, timedevscale=5.0, action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',field='1', mode='extend', spw='7', extendpols=True, action='apply',
+          display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1',spw='7', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='1', spw='8', datacolumn='corrected', 
+         freqdevscale=5.0, timedevscale=5.0, action='apply', display='', flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',field='1', mode='extend', spw='8', extendpols=True, action='apply',
+          display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1',spw='8', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='1', spw='12', datacolumn='corrected', 
+         freqdevscale=5.0, timedevscale=5.0, action='apply', display='', flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',field='1', mode='extend', spw='12', extendpols=True, action='apply',
+          display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1',spw='12', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='1', spw='13', datacolumn='corrected', 
+         freqdevscale=5.0, timedevscale=5.0, action='apply', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',field='1', mode='extend', spw='13', extendpols=True, action='apply',
+          display='', flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1',spw='13', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='1', spw='14', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',field='1', mode='extend', spw='14', extendpols=True, action='apply',
+          display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1',spw='14', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='1', spw='15', datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',field='1', mode='extend', spw='15', extendpols=True, action='apply',
+          display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1',spw='15', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='1', spw='4', datacolumn='corrected', 
+         freqdevscale=4.5, timedevscale=4.5, action='apply', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms',field='1', mode='extend', spw='4', extendpols=True, action='apply',
+          display='', flagbackup=False)
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                  
+*******************************************************************************************************************Rflag; Field = 8
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='0~15', datacolumn='corrected', 
+         freqdevscale=5.0, timedevscale=5.0, action='apply', display='', flagbackup=True)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='0~15', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='0~15', growtime=90.0, growfreq=90.0, 
+         action='apply', display='', flagbackup=False)
+         
+         
+    
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='0', datacolumn='corrected', 
+         freqdevscale=4.5, timedevscale=4.5, action='apply', display='', flagbackup=False)
+
+
+
+         
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='0', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='0', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False) 
+
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='0', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='0:7',antenna='ea16&ea18',
+correlation='RR,LL',datacolumn='corrected',flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='0:7',antenna='ea16&ea18',
+correlation='LR,RL',datacolumn='corrected',flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='3', datacolumn='corrected', 
+         freqdevscale=4.5, timedevscale=4.5, action='apply', display='', flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='3', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='3', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='3', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='3', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='3', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:57',antenna='ea08&ea12',
+correlation='RR,LL,RL,LR',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:21',antenna='ea10&ea14',
+correlation='LL',datacolumn='corrected',flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:20',antenna='ea10&ea14;ea14&ea22;ea10&ea22;ea02&ea10;ea08&ea10',
+correlation='LL',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:19',antenna='ea10&ea14;ea14&ea22',
+correlation='LL',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:18',antenna='ea10&ea14',
+correlation='LL',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:36',antenna='ea15&ea25;ea03&ea19',
+correlation='LL',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:36',antenna='ea22&ea23',
+correlation='RR',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:36',antenna='ea10&ea19;ea04&ea10;ea10&ea22;ea04&ea10;ea08&ea10',
+correlation='LL',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:35',antenna='ea19&ea22',
+correlation='RR',datacolumn='corrected',flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:37',antenna='ea10&ea14',
+correlation='LL',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:34',antenna='ea04&ea22;ea03&ea22;ea12&ea22;ea02&ea22;ea15&ea22;ea22&ea25',
+correlation='RR',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:34',antenna='ea15&ea23',
+correlation='LL',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:33',antenna='ea12&ea22;ea02&ea22;ea22&ea25',
+correlation='RR',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:33',antenna='ea03&ea22',
+correlation='RR',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:32',antenna='ea04&ea22;ea03&ea22;ea12&ea22;ea02&ea22;ea15&ea22;ea22&ea25',
+correlation='RR',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:32',antenna='ea15&ea23',
+correlation='LL',datacolumn='corrected',flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:31',antenna='ea15&ea23;ea16&ea27',
+correlation='LL',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:31',antenna='ea22&ea25',
+correlation='RR',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:30',antenna='ea22&ea25;ea19&ea22;ea14&ea22;ea18&ea22;ea04&ea22',
+correlation='RR',datacolumn='corrected',flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:30',antenna='ea15&ea17;ea17&ea25;ea17&ea19',
+correlation='LL',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:29',antenna='ea18&ea23;ea22&ea23',
+correlation='RR',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='8',spw='3:29',antenna='ea17&ea23;ea19&ea25',
+correlation='LL',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='4', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='4', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='4', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='4', datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply', display='', flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='4', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='4', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='4', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='4', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='4', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='4', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='4', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='4', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='4', datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply', display='', flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='4', extendpols=True, action='apply',
+          display='', flagbackup=False)
+
+ 
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='4', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='4', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='4', extendpols=True, action='apply',
+          display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='4', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='4', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='4', extendpols=True, action='apply',
+          display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='4', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='4',correlation='RR,LL' ,datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply', display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='4',correlation='RR,LL', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='4',correlation='RR,LL' ,datacolumn='corrected', 
+         freqdevscale=2.5, timedevscale=2.5, action='apply', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='4', extendpols=True, action='apply',
+          display='', flagbackup=False)
+
+
+
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='5', datacolumn='corrected', 
+         freqdevscale=4.5, timedevscale=4.5, action='apply', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='5', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='5', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='5', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='5', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+  
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='5', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='5', datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply', display='', flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='5', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='5', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='5',correlation='RR,LL' ,datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply', display='', flagbackup=False)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='5', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='5', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='5',correlation='RR,LL' ,datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='5', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='5', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='5',correlation='RR,LL' ,datacolumn='corrected', 
+         freqdevscale=2.5, timedevscale=2.5, action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='5', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='6',correlation='RR,LL' ,datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='6', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='6', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='6',correlation='RR,LL' ,datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='6', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='6', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='6',correlation='RR,LL' ,datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='6', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='7', datacolumn='corrected', 
+         freqdevscale=4.5, timedevscale=4.5, action='apply', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='7', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='7', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='7', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='7', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='7', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='7', datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply', display='', flagbackup=False)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='7', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='7', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='7', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='7', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='9', datacolumn='corrected', 
+         freqdevscale=4.5, timedevscale=4.5, action='apply', display='', flagbackup=False)   
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='9', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='9', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='9',correlation='RR,LL' ,datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=False) 
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='9', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='9', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='9',correlation='RR,LL' ,datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply', display='', flagbackup=False) 
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='9', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='9', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='9',correlation='RR,LL' ,datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply', display='', flagbackup=False) 
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='9', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='9', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='9',correlation='RR,LL' ,datacolumn='corrected', 
+         freqdevscale=2.5, timedevscale=2.5, action='apply', display='', flagbackup=False) 
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='9', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='9', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='manual',field='8',spw='9:40',antenna='ea16&ea27',correlation='LL',datacolumn='corrected',flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='manual',field='8',spw='9:41',antenna='ea16&ea27',correlation='LL',datacolumn='corrected',flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='manual',field='8',spw='9:37',antenna='ea10&ea27;ea21&ea27',correlation='LL',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='manual',field='8',spw='9:20',antenna='ea10&ea27;ea21&ea27',correlation='LL',datacolumn='corrected',flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='12', datacolumn='corrected', 
+         freqdevscale=4.5, timedevscale=4.5, action='apply', display='', flagbackup=False) 
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='12', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='12', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='12',correlation='RR,LL', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply', display='', flagbackup=False) 
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='12', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='12', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='13', datacolumn='corrected', 
+         freqdevscale=4.5, timedevscale=4.5, action='apply', display='', flagbackup=False) 
+
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='13', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='13', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+       
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8', spw='15', datacolumn='corrected', 
+         freqdevscale=4.5, timedevscale=4.5, action='apply', display='', flagbackup=False) 
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='15', extendpols=True, action='apply',
+          display='', flagbackup=False) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='15', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+
+
+*************************************************************************************************************************Second Calibration Phase
+
+gaincal(vis='M31_4074_Sband_hanning.ms',caltable='M31_4074_Sband_hanning_initial_phase_second calibration.initPh',field='0,1,8',refant='ea04',spw='0~15:21~43',gaintype='G',calmode='p',solint='inf',minsnr=5,gaintable=['M31_4074_Sband_hanning.antpos'])
+
+plotms(vis='M31_4074_Sband_hanning_initial_phase_second calibration.initPh',xaxis='time',yaxis='phase',coloraxis='corr',iteraxis='antenna',plotrange=[-1,-1,-180,180])
+
+
+gaincal(vis='M31_4074_Sband_hanning.ms', caltable='M31_4074_Sband_hanning_secondcal.initPh', 
+        field='0', refant='ea04', spw='0~15:21~43', calmode='p', solint='inf', 
+        minsnr=5, gaintable=['M31_4074_Sband_hanning.antpos'])
+
+plotms(vis='M31_4074_Sband_hanning_secondcal.initPh',xaxis='time',yaxis='phase',coloraxis='corr',field='0',iteraxis='antenna',plotrange=[-1,-1,-180,180])
+
+#Delay Calibration:
+
+gaincal(vis='M31_4074_Sband_hanning.ms',caltable='M31_4074_Sband_hanning_secondcal.K0', 
+        field='0',refant='ea04',spw='0~15:21~43',gaintype='K',solint='inf',
+combine='scan',minsnr=5,gaintable=['M31_4074_Sband_hanning.antpos','M31_4074_Sband_hanning_secondcal.initPh'])
+
+plotms(vis='M31_4074_Sband_hanning_secondcal.K0',xaxis='antenna1',yaxis='delay',coloraxis='baseline')
+
+#Bandpass
+
+bandpass(vis='M31_4074_Sband_hanning.ms',caltable='M31_4074_Sband_hanning_secondcal.B0',
+         field='0',spw='',refant='ea04',combine='scan', 
+         solint='inf',bandtype='B',
+         gaintable=['M31_4074_Sband_hanning.antpos',
+                    'M31_4074_Sband_hanning_secondcal.initPh',
+                    'M31_4074_Sband_hanning_secondcal.K0'])
+
+plotms(vis='M31_4074_Sband_hanning_secondcal.B0',field='0', 
+        xaxis='chan',yaxis='amp',coloraxis='corr',
+        iteraxis='antenna',gridrows=2,gridcols=2)
+
+
+plotms(vis='M31_4074_Sband_hanning_secondcal.B0',field='0', 
+        xaxis='chan',yaxis='phase',coloraxis='corr',plotrange=[-1,-1,-180,180],
+        iteraxis='antenna',gridrows=2,gridcols=2)
+
+
+
+gaincal(vis='M31_4074_Sband_hanning.ms',caltable='M31_4074_Sband_hanning_secondcal.G1',
+        field='0',spw='0~15:21~43',
+        solint='inf',refant='ea04',gaintype='G',calmode='ap',solnorm=False,
+        gaintable=['M31_4074_Sband_hanning.antpos',
+                    'M31_4074_Sband_hanning_secondcal.initPh',
+                   'M31_4074_Sband_hanning_secondcal.K0',
+                   'M31_4074_Sband_hanning_secondcal.B0'],
+        interp=['linear','linear','linear','nearest'])
+
+
+gaincal(vis='M31_4074_Sband_hanning.ms',caltable='M31_4074_Sband_hanning.G1',
+        field='1',spw='0~15:21~43',
+        solint='inf',refant='ea04',gaintype='G',calmode='ap',solnorm=False,
+        gaintable=['M31_4074_Sband_hanning.antpos',
+                    'M31_4074_Sband_hanning_secondcal.initPh',
+                   'M31_4074_Sband_hanning_secondcal.K0',
+                   'M31_4074_Sband_hanning_secondcal.B0'],append=True)
+
+
+
+applycal(vis='M31_4074_Sband_hanning.ms',
+         field='0,1,8',
+         gaintable=['M31_4074_Sband_hanning.antpos',
+                    'M31_4074_Sband_hanning_secondcal.initPh',
+                    'M31_4074_Sband_hanning_secondcal.K0',
+                    'M31_4074_Sband_hanning_secondcal.B0'],
+         gainfield=['','','','',''], 
+         interp=['linear','linear','linear','linear','nearest'],
+         calwt=False)
+
+
+plotms(vis='M31_4074_Sband_hanning.ms',field='0',correlation='RR,LL',
+       antenna='',avgtime='',xaxis='channel',yaxis='amp',
+       ydatacolumn='corrected')
+
+**********************************************************************************************************************Field=0
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='4~15', datacolumn='corrected', 
+         freqdevscale=5.0, timedevscale=5.0, action='apply', display='', flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='5', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=, action='apply', display='', flagbackup=True)
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='6', datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply', display='', flagbackup=True)
+
+         
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='6', extendpols=True, action='apply', 
+         display='', flagbackup=True)           
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='6', growtime=70.0, growfreq=70.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='7', datacolumn='corrected', 
+         freqdevscale=3.5, timedevscale=3.5, action='apply', display='', flagbackup=True)
+
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='7', extendpols=True, action='apply', 
+         display='', flagbackup=True)       
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='7', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='5', datacolumn='corrected', 
+         freqdevscale=2.5, timedevscale=3.0, action='apply', display='', flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='9', datacolumn='corrected', 
+         freqdevscale=4.0, timedevscale=4.0, action='apply', display='', flagbackup=True)
+
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='9', extendpols=True, action='apply', 
+         display='', flagbackup=True)  
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='9', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='12', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply', display='', flagbackup=True)
+
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='12', extendpols=True, action='apply', 
+         display='', flagbackup=True) 
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='12', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='13', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply', display='', flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='0',spw='13', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='0',spw='4', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply', display='', flagbackup=True)
+
+******************************************************************************************************************Field=1
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='1',spw='0~15', datacolumn='corrected', 
+         freqdevscale=5.0, timedevscale=5.0, action='apply', display='', flagbackup=True)
+
+
+  flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1',spw='0~15', extendpols=True, action='apply', 
+         display='', flagbackup=True)  
+
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1', spw='0~15', growtime=90.0, growfreq=90.0, 
+         action='apply', display='', flagbackup=False)
+
+
+
+  flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1',spw='0,7,8,9,10,11,13,14,15', extendpols=True, action='apply', 
+         display='', flagbackup=True)  
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1', spw='0,7,8,9,10,11,13,14,15', growtime=90.0, growfreq=90.0, 
+         action='apply', display='', flagbackup=False)
+         
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='1',spw='3', datacolumn='corrected', 
+         freqdevscale=3.0, timedevscale=3.0, action='apply', display='', flagbackup=True)        
+         
+   flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1',spw='0,7,8,9,10,11,13,14,15', extendpols=True, action='apply', 
+         display='', flagbackup=True)  
+         
+ flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1', spw='0,7,8,9,10,11,13,14,15', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)        
+  
+  
+  flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='1',spw='0,7,8,9,10,11,13,14,15', datacolumn='corrected', 
+         freqdevscale=2.5, timedevscale=3.0, action='apply', display='', flagbackup=True)        
+
+   flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1',spw='0,7,8,9,10,11,13,14,15', extendpols=True, action='apply', 
+         display='', flagbackup=True)
+         
+  flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='1', spw='0,7,8,9,10,11,13,14,15', growtime=80.0, growfreq=80.0, 
+         action='apply', display='', flagbackup=False)           
+         
+
+***********************************************************************************************************Field=8
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='rflag',field='8',spw='0~15', datacolumn='corrected', 
+         freqdevscale=5.0, timedevscale=5.0, action='apply', display='', flagbackup=True)
+
+flagdata(vis='M31_4074_Sband_hanning.ms', mode='extend',field='8', spw='0~15', growtime=90.0, growfreq=90.0, 
+         action='apply', display='', flagbackup=False)
+
+**************************************************************************************************************************************Field = 6
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='6',spw='1,2',datacolumn='data',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='manual',field='6',spw='0~15:0~4;58~63',correlation='RR,LL,LR,RL',datacolumn='data',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='tfcrop',field='6',spw='0~15',correlation='RR,LL,LR,RL',datacolumn='corrected',flagbackup=False)
+
+flagdata(vis='M31_4074_Sband_hanning.ms',mode='tfcrop',field='6',spw='0~15',datacolumn='corrected',flagbackup=False)
+
+
+
+
